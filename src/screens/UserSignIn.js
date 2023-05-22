@@ -131,6 +131,7 @@ function UserSignIn({navigation}) {
                             <Text style={{ color: '#3D79B2', fontWeight: 'bold' }}>Register</Text>
                         </TouchableOpacity>
                     </View>
+                    <Text style={{ marginTop: 10 }}>App Version 1.0.1</Text>
                 </View>
             </SafeAreaView>
         </ScrollView>
