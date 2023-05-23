@@ -5,39 +5,65 @@ import { View, Text, TextInput, TouchableOpacity, Image, Dimensions, SafeAreaVie
 function UserSignIn({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     const [isChecked, setIsChecked] = useState(false);
     const { height } = Dimensions.get('window');
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
     };
-    const handleSignIn = () => {
-        if (email.trim() === '' || password.trim() === '') {
-            console.log('Email and password cannot be empty');
-            return;
-        }
-        try {
-            const baseUrl = 'https://localhost:5001/api/v1/';
-            const url = `User/getUserDetails?UserEmail=${email}&UserPassword=${password}`;
-        
-            fetch(baseUrl + url)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    console.log('API response:', responseJson);
 
-                    if (responseJson.success) {
-                        console.log('Login successful');
-                        navigation.navigate('Home');
-                    } else {
-                        console.log('Login failed');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Sign in failed:', error);
-                });
-        } catch (error) {
-            console.error('Sign in failed:', error);
+    const handleSignIn = () => {
+      setError('');
+      if (!email || !password) {
+        setError('Please enter both email and password.');
+        return;
+      }
+      
+      setIsLoading(true);
+  
+      // Simulating API call delay
+      // Make API call here to authenticate the user
+      const handleLogin = () => {
+        const baseUrl = 'https://localhost:5001/api/v1/';
+        const url = `User/getUserDetails?UserEmail=${email}&UserPassword=${password}`;
+  
+        fetch(baseUrl + url)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            // Handle the API response here
+            console.log('API response:', responseJson);
+  
+            // Check if the login was successful
+            if (responseJson.success) {
+              // Perform actions for successful login
+              console.log('Login successful');
+            } else {
+              // Perform actions for failed login
+              console.log('Login failed');
+            }
+          })
+          .catch((error) => {
+            // Error occurred during the API request
+            console.log('Error:', error);
+          });
+      };
+  
+      setTimeout(() => {
+        // Mock API response
+        const response = { success: true };
+        setIsLoading(false);
+  
+        if (response.success) {
+          // Redirect to the details screen
+          navigation.navigate('Home');
+        } else {
+          setError('Invalid email or password.');
         }
+      }, 2000);
     };
+  
     return (
         <ScrollView>
             <SafeAreaView style={{ flex: 1 }} >
