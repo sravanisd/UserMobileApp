@@ -1,12 +1,13 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
-//import auth from '@react-native-firebase/auth';
-//import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+import auth from '@react-native-firebase/auth';
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 
 function FbLogin({ navigation }) {
-    /*async function onFacebookButtonPress() {
+    async function onFacebookButtonPress() {
         // Attempt login with permissions
         const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
 
@@ -26,7 +27,7 @@ function FbLogin({ navigation }) {
 
         // Sign-in the user with the credential
         return auth().signInWithCredential(facebookCredential);
-    }*/
+    }
     return (
         <SafeAreaView>
 
@@ -40,7 +41,7 @@ function FbLogin({ navigation }) {
                     alignItems: 'center',
                     borderRadius: 8,
                 }}
-                //onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
+                onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
 
             >
                 <Text style={{ color: '#F8F8F8', fontWeight: 'bold', fontSize: 16 }}>Login with Facebook</Text>

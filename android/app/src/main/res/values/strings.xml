@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">UserMobileApp</string>
+    <string name="facebook_app_id">198822973102916</string>
 
 </resources>
