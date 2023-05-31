@@ -22,12 +22,18 @@ function UserSignIn({navigation}) {
             const baseUrl = 'https://localhost:44342/api/v1/';
             const url = `User/getUserDetails?UserEmail=${email}&UserPassword=${password}`;
 
-            fetch(baseUrl + url)
+            fetch(baseUrl + url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    //'Authorization': 'Bearer your_token_here',
+                },
+            })
                 .then((response) => response.json())
                 .then((responseJson) => {
                     console.log('API response:', responseJson);
 
-                    if (responseJson.success) {
+                    if (responseJson.message === 'Success') {
                         console.log('Login successful');
                         navigation.navigate('Home');
                     } else {
