@@ -1,18 +1,13 @@
 import React from 'react';
 import { Alert } from 'react-native';
 import {
-  Button,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
   View,
 } from 'react-native';
 import appleAuth, {
   AppleButton,
-  
 } from '@invertase/react-native-apple-authentication';
 
 const App = () => {
