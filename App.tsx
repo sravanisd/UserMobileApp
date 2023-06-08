@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import {
   Button,
   SafeAreaView,
@@ -11,9 +12,7 @@ import {
 } from 'react-native';
 import appleAuth, {
   AppleButton,
-  appleAuthRequestOperation,
-  AppleAuthRequestSCOPE,
-  AppleAuthCredentialState,
+  
 } from '@invertase/react-native-apple-authentication';
 
 const App = () => {
@@ -34,7 +33,7 @@ const App = () => {
           lastName = fullName.familyName;
         }
       
-        alert(
+        Alert.alert(
           `Identity Token: ${identityToken}\nEmail: ${email}\nFirst Name: ${firstName}\nLast Name: ${lastName}`
         );
       });
