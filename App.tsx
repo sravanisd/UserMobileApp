@@ -29,7 +29,7 @@ const App = () => {
         }
       
         Alert.alert(
-          `Identity Token: ${identityToken}\nEmail: ${email}\nFirst Name: ${firstName}\nLast Name: ${lastName}`
+          ` \nEmail: ${email}\nFirst Name: ${firstName}\nLast Name: ${lastName}`
         );
       });
       
