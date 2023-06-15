@@ -4,11 +4,18 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, ScrollView, Alert } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+} from '@react-native-google-signin/google-signin';
 import { handleSignIn } from '../logic/AuthUser';
 import styles from './UserSignInStyles';
 
-
+GoogleSignin.configure({
+    webClientId: '803557420882-imecrgi8nf3066vnqtu5o4hvu3odpp89.apps.googleusercontent.com',
+  });
 function UserSignIn({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,6 +26,19 @@ function UserSignIn({navigation}) {
     };
     const handleUserSignIn = () => {
         handleSignIn(email, password, navigation, setLoginStatus);
+    };
+    const googleSignIn = async () => {
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        const { idToken } = await GoogleSignin.signIn();
+        const googleCredential = await auth.GoogleAuthProvider.credential(idToken);
+        const res = await auth().signInWithCredential(googleCredential);
+        const accessToken = await (await GoogleSignin.getTokens()).accessToken;
+        const { email, displayName} = res.user;
+        console.log('User Email:', email);
+        console.log('Name:', displayName);
+        console.log(accessToken);
+        Alert.alert('Welcome', `Logged in as ${displayName}`);
+        navigation.navigate('Home');
     };
     return (
         <ScrollView>
@@ -74,6 +94,11 @@ function UserSignIn({navigation}) {
                             Email & Password cannot be empty.
                         </Text>
                     )}
+                    <GoogleSigninButton
+                        size={GoogleSigninButton.Size.Wide}
+                        color={GoogleSigninButton.Color.Dark}
+                        onPress={googleSignIn}
+                    />
 
                     <TouchableOpacity style={styles.forgotPasswordText}>
                         <Text>Forgot Password</Text>
