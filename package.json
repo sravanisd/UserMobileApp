@@ -10,7 +10,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@invertase/react-native-apple-authentication": "^2.2.2",
     "react": "18.2.0",
     "react-native": "0.71.8"
   },

@@ -1,79 +1,117 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
+
 import React from 'react';
-import { Alert } from 'react-native';
+import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
+  Text,
+  useColorScheme,
   View,
 } from 'react-native';
-import appleAuth, {
-  AppleButton,
-} from '@invertase/react-native-apple-authentication';
 
-const App = () => {
-  const handleSignIn = () => {
-    return appleAuth
-      .performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      })
-      .then(appleAuthRequestResponse => {
-        let { identityToken, email, fullName } = appleAuthRequestResponse;
-      
-        let firstName = '';
-        let lastName = '';
-      
-        if (fullName && fullName.givenName && fullName.familyName) {
-          firstName = fullName.givenName;
-          lastName = fullName.familyName;
-        }
-      
-        Alert.alert(
-          ` \nEmail: ${email}\nFirst Name: ${firstName}\nLast Name: ${lastName}`
-        );
-      });
-      
-      
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
 
-     
+type SectionProps = PropsWithChildren<{
+  title: string;
+}>;
+
+function Section({children, title}: SectionProps): JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    <View style={styles.sectionContainer}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: isDarkMode ? Colors.white : Colors.black,
+          },
+        ]}>
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.sectionDescription,
+          {
+            color: isDarkMode ? Colors.light : Colors.dark,
+          },
+        ]}>
+        {children}
+      </Text>
+    </View>
+  );
+}
+
+function App(): JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.container}>
-        <View style={styles.buttonContainer}>
-          <AppleButton
-            buttonStyle={AppleButton.Style.WHITE}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={styles.appleButton}
-            onPress={handleSignIn}
-          />
-          
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <Header />
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Section title="Step One">
+            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
+            screen and then come back to see your edits.
+          </Section>
+          <Section title="See Your Changes">
+            <ReloadInstructions />
+          </Section>
+          <Section title="Debug">
+            <DebugInstructions />
+          </Section>
+          <Section title="Learn More">
+            Read the docs to discover what to do next:
+          </Section>
+          <LearnMoreLinks />
         </View>
-      </SafeAreaView>
-    </>
+      </ScrollView>
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
   },
-  buttonContainer: {
-    alignItems: 'center',
-    marginTop: 250,
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
   },
-  appleButton: {
-    width: 240,
-    height: 45,
-    marginBottom: 16,
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
   },
-  signInText: {
-    color: 'black',
-    fontSize: 16,
-    fontWeight: 'bold',
+  highlight: {
+    fontWeight: '700',
   },
 });
 
