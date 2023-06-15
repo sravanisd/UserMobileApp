@@ -1,92 +1,41 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Dimensions, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
+import { handleSignIn } from '../logic/AuthUser';
+import styles from './UserSignInStyles';
 
 
 function UserSignIn({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isChecked, setIsChecked] = useState(false);
-    const { height } = Dimensions.get('window');
+    const [loginStatus, setLoginStatus] = useState(null);
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
     };
-    const handleSignIn = () => {
-        if (email.trim() === '' || password.trim() === '') {
-            console.log('Email and password cannot be empty');
-            return;
-        }
-        try {
-            const baseUrl = 'https://localhost:44342/api/v1/';
-            const url = `User/getUserDetails?UserEmail=${email}&UserPassword=${password}`;
-
-            fetch(baseUrl + url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    //'Authorization': 'Bearer your_token_here',
-                },
-            })
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    console.log('API response:', responseJson);
-
-                    if (responseJson.message === 'Success') {
-                        console.log('Login successful');
-                        navigation.navigate('Home');
-                    } else {
-                        console.log('Login failed');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Sign in failed:', error);
-                });
-        } catch (error) {
-            console.error('Sign in failed:', error);
-        }
+    const handleUserSignIn = () => {
+        handleSignIn(email, password, navigation, setLoginStatus);
     };
     return (
         <ScrollView>
-            <SafeAreaView style={{ flex: 1 }} >
-                <View style={{ flex: 1, margin: 20, marginTop: 10, alignItems: 'center' }}>
-                    <Text style={{ marginTop: height * 0.1, fontSize: 24, fontWeight: 'bold', color: '#525252' }}>
-                        Welcome to MYB - Store!
-                    </Text>
-                    <Image
-                        source={require('../assets/myBazar.jpg')}
-                        style={{ marginTop: 10, width: 100, height: 100 }}
-                    />
-                    <Text style={{ marginTop: 10, fontSize: 16, color: '#525252' }}>
-                        Your One Stop Indian Store
-                    </Text>
-
+            <SafeAreaView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <Text style={styles.welcomeText}>Welcome to MYB - Store!</Text>
+                    <Image source={require('../assets/myBazar.jpg')} style={styles.logoImage} />
+                    <Text style={styles.descriptionText}>Your One Stop Indian Store</Text>
                     <TextInput
-                        style={{
-                            marginTop: 40,
-                            width: '100%',
-                            height: 45,
-                            borderWidth: 1,
-                            borderColor: 'black',
-                            borderRadius: 8,
-                            paddingHorizontal: 10,
-                        }}
+                        style={styles.input}
                         placeholder="Email Address"
                         placeholderTextColor="#B6B7B7"
                         onChangeText={setEmail}
                     />
 
                     <TextInput
-                        style={{
-                            marginTop: 20,
-                            width: '100%',
-                            height: 45,
-                            borderWidth: 1,
-                            borderColor: 'black',
-                            borderRadius: 8,
-                            paddingHorizontal: 10,
-                        }}
+                        style={styles.input}
                         placeholder="Password"
                         placeholderTextColor="#B6B7B7"
                         onChangeText={setPassword}
@@ -94,54 +43,54 @@ function UserSignIn({navigation}) {
                     />
 
                     <TouchableOpacity
-                        style={{ marginTop: 20, flexDirection: 'row', alignItems: 'center' }}
+                        style={styles.checkboxContainer}
                         onPress={handleCheckboxChange}
                     >
                         <View
-                            style={{
-                                width: 20,
-                                height: 20,
-                                borderWidth: 1,
-                                borderColor: 'black',
-                                marginRight: 5,
-                                backgroundColor: isChecked ? '#3D79B2' : 'transparent',
-                            }}
+                            style={[
+                                styles.checkbox,
+                                {
+                                    backgroundColor: isChecked ? '#3D79B2' : 'transparent',
+                                },
+                            ]}
                         />
-                        <Text>Remember Me</Text>
+                        <Text style={styles.rememberMeText}>Remember Me</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={{
-                            marginTop: 20,
-                            width: '100%',
-                            height: 40,
-                            backgroundColor: '#3D79B2',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 8,
-                        }}
-                        onPress={handleSignIn}
+                        style={styles.loginButton}
+                        onPress={handleUserSignIn}
                     >
-                        <Text style={{ color: '#F8F8F8', fontWeight: 'bold', fontSize: 16 }}>Login</Text>
+                        <Text style={styles.loginButtonText}>Login</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{ marginTop: 20 }}>
-                        <Text style={{ color: '#3D79B2', fontWeight: 'bold', fontSize: 16 }}>
-                            Forgot Password
+                    {loginStatus === 'failed' && (
+                        <Text style={styles.loginFailedText}>
+                            Login failed. Please check your credentials.
                         </Text>
+                    )}
+                    {loginStatus === 'empty' && (
+                        <Text style={styles.loginFailedText}>
+                            Email & Password cannot be empty.
+                        </Text>
+                    )}
+
+                    <TouchableOpacity style={styles.forgotPasswordText}>
+                        <Text>Forgot Password</Text>
                     </TouchableOpacity>
 
-                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <Text style={{ color: 'black' }}>Don't have an account?</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('Register')} >
-                            <Text style={{ color: '#3D79B2', fontWeight: 'bold' }}>Register</Text>
+                    <View style={styles.signUpContainer}>
+                        <Text style={styles.signUpText}>Don't have an account?</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                            <Text style={styles.signUpLink}>Register</Text>
                         </TouchableOpacity>
                     </View>
-                    <Text style={{ marginTop: 10 }}>App Version 1.0.1</Text>
+                    <Text style={styles.appVersionText}>App Version 1.0.1</Text>
                 </View>
             </SafeAreaView>
         </ScrollView>
     );
+
 };
 
 export default UserSignIn;
