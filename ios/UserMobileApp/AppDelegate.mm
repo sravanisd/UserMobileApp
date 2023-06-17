@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-
+#import <RNGoogleSignin/RNGoogleSignin.h>
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
@@ -13,7 +13,10 @@
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
-
+// AppDelegate.m
+- (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
+  return  [RNGoogleSignin application:application openURL:url options:options];
+}
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG

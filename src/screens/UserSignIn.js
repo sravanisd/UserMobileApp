@@ -4,7 +4,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Button, Image, SafeAreaView, ScrollView, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
   GoogleSignin,
@@ -12,6 +12,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import { handleSignIn } from '../logic/AuthUser';
 import styles from './UserSignInStyles';
+import appleAuth, {AppleButton} from '@invertase/react-native-apple-authentication';
 
 GoogleSignin.configure({
     webClientId: '803557420882-imecrgi8nf3066vnqtu5o4hvu3odpp89.apps.googleusercontent.com',
@@ -40,6 +41,30 @@ function UserSignIn({navigation}) {
         Alert.alert('Welcome', `Logged in as ${displayName}`);
         navigation.navigate('Home');
     };
+
+    const handleAppleSignIn = () => {
+        return appleAuth
+          .performRequest({
+            requestedOperation: appleAuth.Operation.LOGIN,
+            requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+          })
+          .then(appleAuthRequestResponse => {
+            let { email, fullName } = appleAuthRequestResponse;
+   
+            let firstName = '';
+            let lastName = '';
+   
+            if (fullName && fullName.givenName && fullName.familyName) {
+              firstName = fullName.givenName;
+              lastName = fullName.familyName;
+            }
+   
+            Alert.alert(
+              ` \nEmail: ${email}\nFirst Name: ${firstName}\nLast Name: ${lastName}`
+            );
+            navigation.navigate('Home');
+          });
+      }
     return (
         <ScrollView>
             <SafeAreaView style={{ flex: 1 }}>
@@ -98,8 +123,15 @@ function UserSignIn({navigation}) {
                         size={GoogleSigninButton.Size.Wide}
                         color={GoogleSigninButton.Color.Dark}
                         onPress={googleSignIn}
+                    />   
+                    <View>
+                    <AppleButton
+                        buttonStyle={AppleButton.Style.WHITE}
+                        buttonType={AppleButton.Type.SIGN_IN}
+                        style={styles.appleButton}
+                        onPress={handleAppleSignIn}
                     />
-
+                    </View>
                     <TouchableOpacity style={styles.forgotPasswordText}>
                         <Text>Forgot Password</Text>
                     </TouchableOpacity>
