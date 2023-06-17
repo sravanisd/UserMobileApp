@@ -87,4 +87,13 @@ export default StyleSheet.create({
     appVersionText: {
         marginTop: 10,
     },
+    appleButton: {
+        width: 300,
+        height: 40,
+        marginBottom: 16,
+      },
+      buttonContainer: {
+        alignItems: 'center',
+        marginTop: 250,
+      },
 });
