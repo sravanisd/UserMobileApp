@@ -4,7 +4,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, Image, SafeAreaView, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, ScrollView, Alert, Platform } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
   GoogleSignin,
@@ -125,12 +125,14 @@ function UserSignIn({navigation}) {
                         onPress={googleSignIn}
                     />   
                     <View>
-                    <AppleButton
+                    {Platform.OS === 'ios' && (
+                        <AppleButton
                         buttonStyle={AppleButton.Style.WHITE}
                         buttonType={AppleButton.Type.SIGN_IN}
                         style={styles.appleButton}
                         onPress={handleAppleSignIn}
                     />
+                    )}
                     </View>
                     <TouchableOpacity style={styles.forgotPasswordText}>
                         <Text>Forgot Password</Text>
