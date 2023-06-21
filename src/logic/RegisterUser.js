@@ -4,7 +4,6 @@
 
 import { Alert } from 'react-native';
 import { baseUrl } from "../apiUtils/api";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 
 export const handleUserRegister = async (firstName, lastName, email, phoneNumber, password, address,aptNo, city, state, country, zipcode, imageSource, navigation) => {
@@ -49,12 +48,10 @@ export const handleUserRegister = async (firstName, lastName, email, phoneNumber
       const postDataString = JSON.stringify(postData);
       console.log(postDataString);
       const accessToken = await AsyncStorage.getItem('accessToken');
-      console.log("Access token is :", accessToken);
         const url = 'User/createnewuser';
         const response = await axios.post(baseUrl + url, postDataString,{
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
           },
         });
         console.log(response.data);
