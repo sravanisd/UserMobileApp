@@ -1,11 +1,26 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 import styles from './UserRegisterStyles';
-import handleUserRegister from '../logic/RegisterUser';
+import { handleUserRegister } from '../logic/RegisterUser';
 import handleAddPhoto from '../logic/RegisterUser'
 
-function UserRegister(){
+function UserRegister({navigation}){
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [password, setPassword] = useState('');
+    const [address, setAddress] = useState('');
+    const [aptNo, setAptNo] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const [zipcode, setZipcode] = useState('');
+    const imageSource = '0x9EE965'; 
+    const handleRegister = () => {
+        handleUserRegister(firstName, lastName, email, phoneNumber, password, address,aptNo, city, state, country, zipcode, imageSource, navigation);
+    };
 return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -24,28 +39,33 @@ return (
                         style={styles.textInput}
                         placeholder="First Name"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setFirstName(text)}
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder="Last Name"
                         keyboardType="email-address"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setLastName(text)}
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder="Email Address"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setEmail(text)}
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder="Phone Number"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setPhoneNumber(text)}
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder="Password"
                         secureTextEntry
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setPassword(text)}
                     />
                 </View>
                 <View style={styles.section}>
@@ -54,35 +74,42 @@ return (
                         style={styles.textInput}
                         placeholder="Address"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setAddress(text)}
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder="AptNo"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setAptNo(text)}
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder="City"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setCity(text)}
+
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder="State"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setState(text)}
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder="Country"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setCountry(text)}
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder="Zipcode"
                         placeholderTextColor="#B6B7B7"
+                        onChangeText={text => setZipcode(text)}
                     />
                 <TouchableOpacity
                     style={styles.registerButton}
-                    onPress={handleUserRegister}
+                    onPress={handleRegister}
                 >
                     <Text style={styles.registerButtonText}>Register</Text>
                 </TouchableOpacity>
