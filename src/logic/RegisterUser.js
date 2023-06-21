@@ -47,7 +47,6 @@ export const handleUserRegister = async (firstName, lastName, email, phoneNumber
       };
       const postDataString = JSON.stringify(postData);
       console.log(postDataString);
-      const accessToken = await AsyncStorage.getItem('accessToken');
         const url = 'User/createnewuser';
         const response = await axios.post(baseUrl + url, postDataString,{
           headers: {
