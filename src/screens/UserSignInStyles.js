@@ -51,12 +51,13 @@ export default StyleSheet.create({
     },
     loginButton: {
         marginTop: 20,
-        width: '100%',
+        width: 300,
         height: 40,
+        marginBottom :16,
         backgroundColor: '#3D79B2',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 8,
+        borderRadius: 0,
     },
     loginButtonText: {
         color: '#F8F8F8',
@@ -87,13 +88,29 @@ export default StyleSheet.create({
     appVersionText: {
         marginTop: 10,
     },
+    GoogleSigninButton :{
+        width: 300,
+        height: 40,
+       marginBottom: 16,
+       marginTop: 20,
+       borderRadius :0,
+
+      },
     appleButton: {
         width: 300,
         height: 40,
-        marginBottom: 16,
+       marginBottom: 16,
+       marginTop :20,
+       borderRadius : 0,
+    
       },
       buttonContainer: {
+        width: 310,
+        height: 40,
+        marginBottom: 16,
+        display: 'flex',
+        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 250,
       },
+     
 });
