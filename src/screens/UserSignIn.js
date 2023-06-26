@@ -7,8 +7,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, ScrollView, Alert, Platform } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
-  GoogleSignin,
-  GoogleSigninButton,
+  GoogleSignin
 } from '@react-native-google-signin/google-signin';
 import { handleSignIn } from '../logic/AuthUser';
 import styles from './UserSignInStyles';
@@ -35,11 +34,28 @@ function UserSignIn({navigation}) {
         const res = await auth().signInWithCredential(googleCredential);
         const accessToken = await (await GoogleSignin.getTokens()).accessToken;
         const { email, displayName} = res.user;
-        console.log('User Email:', email);
-        console.log('Name:', displayName);
-        console.log(accessToken);
-        Alert.alert('Welcome', `Logged in as ${displayName}`);
-        navigation.navigate('Home');
+        console.log(res);
+        const userExists = false;
+
+        if (userExists) {
+            console.log('User Email:', email);
+            console.log('Name:', displayName);
+            console.log(accessToken);
+            Alert.alert('Welcome', `Logged in as ${displayName}`);
+            navigation.navigate('Home');
+        } else {
+            const firstName = displayName.split(' ')[0];
+            const lastName = displayName.split(' ')[1];
+            console.log(firstName);
+            console.log(lastName);
+            const password = 'gmaillogin'; // Set password to 'gmaillogin' for Gmail sign-in users
+            navigation.navigate('Register', {
+                firstName,
+                lastName,
+                email,
+                password,
+            });
+        }
     };
 
     const handleAppleSignIn = () => {
@@ -119,11 +135,13 @@ function UserSignIn({navigation}) {
                             Email & Password cannot be empty.
                         </Text>
                     )}
-                    <GoogleSigninButton
-                        size={GoogleSigninButton.Size.Wide}
-                        color={GoogleSigninButton.Color.Dark}
+                    <TouchableOpacity
+                        style={styles.loginButton}
                         onPress={googleSignIn}
-                    />   
+                    >
+                        <Text style={styles.loginButtonText}>Continue With Google</Text>
+                    </TouchableOpacity>
+
                     <View>
                     {Platform.OS === 'ios' && (
                         <AppleButton

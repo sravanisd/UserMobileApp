@@ -4,13 +4,19 @@ import { View, ScrollView, Image, Text, TextInput, TouchableOpacity } from 'reac
 import styles from './UserRegisterStyles';
 import { handleUserRegister } from '../logic/RegisterUser';
 import handleAddPhoto from '../logic/RegisterUser'
+import { useRoute } from '@react-navigation/native';
 
 function UserRegister({navigation}){
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
+    const route = useRoute();
+    const { firstName: initialFirstName, lastName: initialLastName, email: initialEmail, password: initialPassword } = route.params;
+    console.log(route.params);
+    const isGoogleLogin = !!initialFirstName || !!initialLastName || !!initialEmail || !!initialPassword;
+    console.log(isGoogleLogin);
+    const [firstName, setFirstName] = useState(initialFirstName || '');
+    const [lastName, setLastName] = useState(initialLastName || '');
+    const [email, setEmail] = useState(initialEmail || '');
+    const [password, setPassword] = useState(initialPassword || '');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [password, setPassword] = useState('');
     const [address, setAddress] = useState('');
     const [aptNo, setAptNo] = useState('');
     const [city, setCity] = useState('');
@@ -35,6 +41,8 @@ return (
             </View>
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Personal Details</Text>
+                {!isGoogleLogin && (
+                    <>
                     <TextInput
                         style={styles.textInput}
                         placeholder="First Name"
@@ -54,12 +62,16 @@ return (
                         placeholderTextColor="#B6B7B7"
                         onChangeText={text => setEmail(text)}
                     />
+                    </>
+                )}
                     <TextInput
                         style={styles.textInput}
                         placeholder="Phone Number"
                         placeholderTextColor="#B6B7B7"
                         onChangeText={text => setPhoneNumber(text)}
                     />
+                {!isGoogleLogin && (
+                <>
                     <TextInput
                         style={styles.textInput}
                         placeholder="Password"
@@ -67,6 +79,8 @@ return (
                         placeholderTextColor="#B6B7B7"
                         onChangeText={text => setPassword(text)}
                     />
+                </>
+                )}
                 </View>
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Contact Details</Text>
