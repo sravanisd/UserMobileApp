@@ -12,6 +12,7 @@ import {
 import { handleSignIn } from '../logic/AuthUser';
 import styles from './UserSignInStyles';
 import appleAuth, {AppleButton} from '@invertase/react-native-apple-authentication';
+import {handleEmailCheck} from '../logic/UserEmailCheck';
 
 GoogleSignin.configure({
     webClientId: '803557420882-imecrgi8nf3066vnqtu5o4hvu3odpp89.apps.googleusercontent.com',
@@ -34,28 +35,30 @@ function UserSignIn({navigation}) {
         const res = await auth().signInWithCredential(googleCredential);
         const accessToken = await (await GoogleSignin.getTokens()).accessToken;
         const { email, displayName} = res.user;
-        console.log(res);
-        const userExists = false;
-
+        handleEmailCheck(email)
+      .then((userExists) => {
+        console.log(userExists);
         if (userExists) {
-            console.log('User Email:', email);
-            console.log('Name:', displayName);
-            console.log(accessToken);
-            Alert.alert('Welcome', `Logged in as ${displayName}`);
-            navigation.navigate('Home');
+          console.log('User Email:', email);
+          console.log('Name:', displayName);
+          console.log(accessToken);
+          Alert.alert('Welcome', `Logged in as ${displayName}`);
+          navigation.navigate('Home');
         } else {
-            const firstName = displayName.split(' ')[0];
-            const lastName = displayName.split(' ')[1];
-            console.log(firstName);
-            console.log(lastName);
-            const password = 'gmaillogin'; // Set password to 'gmaillogin' for Gmail sign-in users
-            navigation.navigate('Register', {
-                firstName,
-                lastName,
-                email,
-                password,
-            });
+          const firstName = displayName.split(' ')[0];
+          const lastName = displayName.split(' ')[1];
+          const password = 'gmaillogin'; // Set password to 'gmaillogin' for Gmail sign-in users
+          navigation.navigate('Register', {
+            firstName,
+            lastName,
+            email,
+            password,
+          });
         }
+      })
+      .catch((error) => {
+        console.error('Error checking email:', error);
+      });
     };
 
     const handleAppleSignIn = () => {
