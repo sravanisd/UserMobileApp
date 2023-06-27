@@ -8,7 +8,7 @@ import { useRoute } from '@react-navigation/native';
 
 function UserRegister({navigation}){
     const route = useRoute();
-    const { firstName: initialFirstName, lastName: initialLastName, email: initialEmail, password: initialPassword } = route.params;
+    const { firstName: initialFirstName, lastName: initialLastName, email: initialEmail, password: initialPassword } = route.params || {};
     console.log(route.params);
     const isGoogleLogin = !!initialFirstName || !!initialLastName || !!initialEmail || !!initialPassword;
     console.log(isGoogleLogin);
