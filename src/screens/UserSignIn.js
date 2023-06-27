@@ -21,11 +21,12 @@ function UserSignIn({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isChecked, setIsChecked] = useState(false);
+    const [loginStatus, setLoginStatus] = useState(null);
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
     };
     const handleUserSignIn = () => {
-        handleSignIn(email, password, navigation);
+        handleSignIn(email, password, navigation, setLoginStatus);
     };
     const googleSignIn = async () => {
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
@@ -139,10 +140,6 @@ function UserSignIn({navigation}) {
                     )}
                     <TouchableOpacity
                         style={styles.loginButton}
-                                    
-                    <GoogleSigninButton
-                        size={GoogleSigninButton.Size.Wide}
-                        color={GoogleSigninButton.Color.Dark}
                         onPress={googleSignIn}
                     >
                         <Text style={styles.loginButtonText}>Continue With Google</Text>

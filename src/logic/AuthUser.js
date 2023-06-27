@@ -2,14 +2,13 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { baseUrl } from '../apiUtils/api';
-import { Alert } from 'react-native';
 
-export const handleSignIn = async (email, password, navigation) => {
+export const handleSignIn = async (email, password, navigation, setLoginStatus) => {
     // Business logic for handling sign-in process
     // ...
     if (email.trim() === '' || password.trim() === '') {
         console.log('Email and password cannot be empty');
-        Alert.alert("Cannot Login", "Email or Password is empty");
+        setLoginStatus('empty');
         return;
     }   
     try {
@@ -32,14 +31,15 @@ export const handleSignIn = async (email, password, navigation) => {
                     navigation.navigate('Home');
                 } else {
                     console.log('Login failed due to invalid credentials');
-                    Alert.alert("Login failed","Incorrect email or password");
+                    setLoginStatus('failed');
                 }
             })
             .catch((error) => {
                 console.log('Sign in failed', error);
-                Alert.alert("Login failed", "Incorrect email or password");
+                setLoginStatus('failed');
             });
     } catch (error) {
         console.log('Sign in failed:', error);
+        setLoginStatus('failed');
     }
 };
