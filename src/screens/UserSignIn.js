@@ -14,6 +14,7 @@ import styles from './UserSignInStyles';
 import appleAuth, {AppleButton} from '@invertase/react-native-apple-authentication';
 import {handleEmailCheck} from '../logic/UserEmailCheck';
 
+
 GoogleSignin.configure({
     webClientId: '803557420882-imecrgi8nf3066vnqtu5o4hvu3odpp89.apps.googleusercontent.com',
   });
@@ -21,12 +22,11 @@ function UserSignIn({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isChecked, setIsChecked] = useState(false);
-    const [loginStatus, setLoginStatus] = useState(null);
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
     };
     const handleUserSignIn = () => {
-        handleSignIn(email, password, navigation, setLoginStatus);
+        handleSignIn(email, password, navigation);
     };
     const googleSignIn = async () => {
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
@@ -127,17 +127,6 @@ function UserSignIn({navigation}) {
                     >
                         <Text style={styles.loginButtonText}>Login</Text>
                     </TouchableOpacity>
-
-                    {loginStatus === 'failed' && (
-                        <Text style={styles.loginFailedText}>
-                            Login failed. Please check your credentials.
-                        </Text>
-                    )}
-                    {loginStatus === 'empty' && (
-                        <Text style={styles.loginFailedText}>
-                            Email & Password cannot be empty.
-                        </Text>
-                    )}
                     <TouchableOpacity
                         style={styles.loginButton}
                         onPress={googleSignIn}
