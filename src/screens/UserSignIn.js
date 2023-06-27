@@ -77,13 +77,28 @@ function UserSignIn({navigation}) {
               firstName = fullName.givenName;
               lastName = fullName.familyName;
             }
-   
-            Alert.alert(
-              ` \nEmail: ${email}\nFirst Name: ${firstName}\nLast Name: ${lastName}`
-            );
-            navigation.navigate('Home');
+            handleEmailCheck(email)
+
+            .then((userExists) => {
+              console.log(userExists);
+              if (userExists) {
+                console.log('User Email:', email);
+                console.log('Name:', firstName);
+                Alert.alert('Welcome', `Logged in as ${firstName}`);
+                navigation.navigate('Home');
+              } else {
+                const password = 'appleSignin'; 
+                navigation.navigate('Register', {
+                  firstName,
+                  lastName,
+                  email,
+                  password,
+                });
+              }
+            });
           });
-      }
+        }
+            
     return (
         <ScrollView>
             <SafeAreaView style={{ flex: 1 }}>
