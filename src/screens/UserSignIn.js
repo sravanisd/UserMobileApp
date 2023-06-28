@@ -77,13 +77,28 @@ function UserSignIn({navigation}) {
               firstName = fullName.givenName;
               lastName = fullName.familyName;
             }
-   
-            Alert.alert(
-              ` \nEmail: ${email}\nFirst Name: ${firstName}\nLast Name: ${lastName}`
-            );
-            navigation.navigate('Home');
+            handleEmailCheck(email)
+
+            .then((userExists) => {
+              console.log(userExists);
+              if (userExists) {
+                console.log('User Email:', email);
+                console.log('Name:', firstName);
+                Alert.alert('Welcome', `Logged in as ${firstName} ${lastName}`);
+                navigation.navigate('Home');
+              } else {
+                const password = 'appleSignin'; 
+                navigation.navigate('Register', {
+                  firstName,
+                  lastName,
+                  email,
+                  password,
+                });
+              }
+            });
           });
-      }
+        }
+            
     return (
         <ScrollView>
             <SafeAreaView style={{ flex: 1 }}>
@@ -133,15 +148,11 @@ function UserSignIn({navigation}) {
                     >
                         <Text style={styles.loginButtonText}>Continue With Google</Text>
                     </TouchableOpacity>
-
                     <View>
                     {Platform.OS === 'ios' && (
-                        <AppleButton
-                        buttonStyle={AppleButton.Style.WHITE}
-                        buttonType={AppleButton.Type.SIGN_IN}
-                        style={styles.appleButton}
-                        onPress={handleAppleSignIn}
-                    />
+                    <TouchableOpacity style={[styles.loginButton, styles.appleButton]} onPress={handleAppleSignIn}>
+                    <Text style={styles.loginButtonText}>Continue With Apple</Text>
+                    </TouchableOpacity>
                     )}
                     </View>
                     <TouchableOpacity style={styles.forgotPasswordText}>

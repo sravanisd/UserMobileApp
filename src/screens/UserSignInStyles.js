@@ -88,9 +88,13 @@ export default StyleSheet.create({
         marginTop: 10,
     },
     appleButton: {
-        width: 300,
+        marginTop: 20,
+        width: 350,
         height: 40,
-        marginBottom: 16,
+        backgroundColor: '#3D79B2',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 8,
       },
       buttonContainer: {
         alignItems: 'center',
