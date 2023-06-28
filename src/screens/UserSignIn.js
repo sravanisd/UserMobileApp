@@ -84,7 +84,7 @@ function UserSignIn({navigation}) {
               if (userExists) {
                 console.log('User Email:', email);
                 console.log('Name:', firstName);
-                Alert.alert('Welcome', `Logged in as ${firstName}`);
+                Alert.alert('Welcome', `Logged in as ${firstName} ${lastName}`);
                 navigation.navigate('Home');
               } else {
                 const password = 'appleSignin'; 
@@ -148,15 +148,11 @@ function UserSignIn({navigation}) {
                     >
                         <Text style={styles.loginButtonText}>Continue With Google</Text>
                     </TouchableOpacity>
-
                     <View>
                     {Platform.OS === 'ios' && (
-                        <AppleButton
-                        buttonStyle={AppleButton.Style.WHITE}
-                        buttonType={AppleButton.Type.SIGN_IN}
-                        style={styles.appleButton}
-                        onPress={handleAppleSignIn}
-                    />
+                    <TouchableOpacity style={[styles.loginButton, styles.appleButton]} onPress={handleAppleSignIn}>
+                    <Text style={styles.loginButtonText}>Continue With Apple</Text>
+                    </TouchableOpacity>
                     )}
                     </View>
                     <TouchableOpacity style={styles.forgotPasswordText}>
